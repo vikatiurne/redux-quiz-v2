@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import StartFirebase from '../../firebase/firebaseConfig/startFirebase';
-import { onValue, ref, remove } from 'firebase/database';
+import { getData,db } from '../../firebase/firebaseConfig/startFirebase';
+import { ref, remove } from 'firebase/database';
 
 const initialState = {
   quizes: [],
@@ -9,20 +9,15 @@ const initialState = {
   author: '',
 };
 
-const db = StartFirebase();
+
 
 const getQuizList = async () => {
-  const response = await new Promise((resolve) => {
-    const dbRef = ref(db, 'quizes');
-    onValue(dbRef, (snapshot) => {
-      resolve(snapshot.val());
-    });
-  });
+ const response = await getData()
   const quizesUpdated = [];
   for (let key in response) {
     quizesUpdated.push({
       id: key,
-      title: `${quizesUpdated.length + 1}. ${response[key].quiz[0]['title']}`,
+      title: `${quizesUpdated.length + 1}. ${response[key].title}`,
       author: response[key].author,
     });
   }

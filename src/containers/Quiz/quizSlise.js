@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
+import { ref, remove } from 'firebase/database';
+
 import axios from '../../axios/axios-quiz';
+import db from '../../firebase/firebaseConfig/startFirebase'
 
 const initialState = {
   numQuestion: 0,
@@ -14,14 +17,23 @@ const initialState = {
 export const fetchQuiz = createAsyncThunk(
   '/quizes/fetchQuiz',
   async (quizId) => {
-    try {
       const response = await axios.get(`/quizes/${quizId}.json`);
       return response.data;
-    } catch (error) {
-      return error;
-    }
   }
 );
+
+
+// export const fetchDeleteQuestion = createAsyncThunk(
+//   '/quizes/fetchDeleteQuestion/',
+//  async ({ id, index }) => {
+//   console.log(id,index)
+//     remove(ref(db, `quizes/${id}/quiz/${index}`));
+//     // const response = await axios.get(`/quizes/${id}.json`);
+//     // console.log(response.data)
+//     // return response.data;
+//   }
+// );
+
 
 const quizSlice = createSlice({
   name: 'quiz',
@@ -89,7 +101,10 @@ const quizSlice = createSlice({
       .addCase(fetchQuiz.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
-      });
+      })
+      // .addCase(fetchDeleteQuestion.fulfilled, (state, action)=>{
+      //   // state.quiz = action.payload
+      // })
   },
 });
 

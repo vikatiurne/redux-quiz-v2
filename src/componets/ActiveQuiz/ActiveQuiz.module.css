@@ -18,3 +18,33 @@
   max-width: 50px;
   width: 100%;
 }
+
+.icons{
+  margin-bottom: 0.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.editIcon,
+.deleteIcon {
+  padding-top: 0.3em;
+  margin-left: 0.3em;
+  cursor: pointer;
+  color: #290c4f;
+  font-size: 1.6em;
+  transition: transform 0.3s;
+}
+
+.editIcon:hover,
+.deleteIcon:hover {
+  cursor: pointer;
+  transform: scale(1.4);
+}
+
+.editIcon:hover {
+  color: rgb(225, 232, 10)
+}
+
+.deleteIcon:hover {
+  color: red;
+}
