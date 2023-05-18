@@ -1,0 +1,32 @@
+.drawer{
+    position: fixed;
+    z-index: 200;
+    top:0;
+    left: 0;
+    background: linear-gradient(90deg, #65617e, 0%, #e4e2f0 100%);
+    height: 100%;
+    max-width: calc(100px + 15vw);
+    width: 100%;
+    transition: all 0.3s ease-in;
+}
+.close{
+    transform: translateX(calc(-100px - 15vw));
+}
+.drawer ul{
+    padding: 2.2em 0.62em;
+}
+.drawer ul li{
+    color: rgb(76, 10, 130);
+    cursor: pointer;
+    font-size: 1.25em;
+   margin-bottom: 1em;
+}
+.drawer ul li a{
+    text-decoration: none;
+    transition: font-weight 0.1s ease-in;
+}
+.drawer ul li a:hover{
+    text-decoration:underline;
+    font-weight: bold;
+}
+

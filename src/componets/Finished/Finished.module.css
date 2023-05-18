@@ -1,0 +1,46 @@
+.finished {
+  padding: 10px;
+  margin: 20px auto;
+  max-width: 600px;
+  width: 100%;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
+.result {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: white;
+}
+.result span {
+  font-size: 20px;
+  color: #ccc;
+}
+.errorAnswer {
+  color: #290c4f;
+}
+.finished ul {
+  margin-bottom: 15px;
+}
+
+.finished ul li p {
+  width: 100%;
+}
+.finished ul li {
+  display: flex;
+  text-align: left;
+  align-items: center;
+  margin-bottom: 4px;
+  color: white;
+  border-bottom: 1px dotted white;
+}
+.checkIcon,
+.crossIcon {
+  font-size: 16px;
+}
+.checkIcon {
+  color: lightgreen;
+}
+.crossIcon {
+  color: red;
+}

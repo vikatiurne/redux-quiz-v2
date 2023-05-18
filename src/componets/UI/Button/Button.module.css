@@ -1,0 +1,39 @@
+.button {
+  color: white;
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 15px 10px 0 0;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  transition: transform 0.22s ease;
+}
+.button:last-child{
+  margin-right: 0;
+}
+.button:active {
+  box-shadow: inset 2px 2px 1px rgba(0, 0, 0, 0.3);
+}
+.button:hover {
+  transform: scale(1.05);
+}
+.button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.success {
+  background: rgb(132, 199, 56);
+}
+.error {
+  background: rgba(240, 87, 108, 1);
+}
+.primary {
+  background-color: #2884f8;
+  color: white;
+}
+
+

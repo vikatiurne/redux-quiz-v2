@@ -1,0 +1,44 @@
+.modal {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.5s;
+}
+.modal.active {
+  position: relative;
+  opacity: 1;
+  pointer-events: all;
+}
+.modalContent {
+  padding: 1.2em;
+  border-radius: 0.3em;
+  width: 50vw;
+  background-image: url(../../../assets/images/3188668.jpg);
+  color: white;
+  transform: scale(0.5);
+  transition: 0.4s all;
+}
+
+.modalContent.active {
+  transform: scale(1);
+}
+.iconClose {
+    position: absolute;
+    right: 0.4em;
+    top: 0.4em;
+}
+
+@media (max-width: 700px) {
+  .modalContent {
+    width: 80vw;
+  }
+}

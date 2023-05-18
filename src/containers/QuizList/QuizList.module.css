@@ -1,0 +1,91 @@
+.quizList {
+  position: fixed;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  padding-bottom: 2.5em;
+  text-align: center;
+  background-image: url(../../assets/images/17973871.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.quizList ul {
+  padding-top: 1.2em;
+  margin-left: 2.2em;
+  text-align: left;
+}
+.quizList div h1 {
+  padding-top: 2.2em;
+  color: #290c4f;
+}
+.quizList ul li {
+  margin-bottom: 0.6em;
+}
+.quizList ul li a {
+  color: #290c4f;
+  font-size: 1.2em;
+  text-decoration: none;
+}
+.quizList ul li a:hover {
+  color: #290c4f;
+  font-weight: bold;
+}
+
+.quizOfList {
+  padding-right: 1em;
+  margin-bottom: 0.4em;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editIcon,
+.deleteIcon {
+  padding-top: 0.3em;
+  margin-left: 0.3em;
+  cursor: pointer;
+  color: #290c4f;
+  font-size: 2em;
+  transition: transform 0.3s;
+}
+
+.editIcon:hover,
+.deleteIcon:hover {
+  cursor: pointer;
+  transform: scale(1.4);
+}
+
+.editIcon:hover {
+  color: rgb(202, 116, 3)
+}
+
+.deleteIcon:hover {
+  color: red;
+}
+
+.modalContent{
+  text-align: center;
+}
+
+.modalTitle {
+  text-align: center;
+  font-size: 1.5em;
+  color: red;
+  font-weight: bold;
+}
+.modalTitle + p {
+  text-align: center;
+  padding-top: 0.4em;
+  color: #290c4f;
+}
+
+@media (max-width: 400px) {
+
+  .modalContent  {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+

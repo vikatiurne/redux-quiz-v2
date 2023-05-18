@@ -1,0 +1,24 @@
+.answerItem {
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.answerItem:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.02);
+  transition: background 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out;
+}
+.success,
+.success:hover {
+  background: rgba(161, 240, 69, 0.7);
+  transition: all 0.3s ease-in-out;
+}
+.error,
+.error:hover {
+  background: rgba(240, 87, 108, 0.7);
+  transition: all 0.3s ease-in-out;
+}
