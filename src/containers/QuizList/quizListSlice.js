@@ -9,8 +9,6 @@ const initialState = {
   author: '',
 };
 
-
-
 const getQuizList = async () => {
  const response = await getData()
   const quizesUpdated = [];

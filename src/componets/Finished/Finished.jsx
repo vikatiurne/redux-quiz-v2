@@ -44,15 +44,16 @@ const Finished = () => {
           );
         })}
       </ul>
-
-      <Button type="primary" valid={true} onclick={repeatHandler}>
-        Повторити
-      </Button>
-      <Link to="..">
-        <Button type="success" valid={true}>
-          Перейти до списку тестів
+      <div className={styles.control}>
+        <Button type="primary" valid={true} onclick={repeatHandler}>
+          Повторити
         </Button>
-      </Link>
+        <Link to="..">
+          <Button type="success" valid={true}>
+            Перейти до списку тестів
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };

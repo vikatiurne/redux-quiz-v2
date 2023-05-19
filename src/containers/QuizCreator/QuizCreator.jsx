@@ -69,8 +69,8 @@ const QuizCreator = () => {
 
   const createQuizHandler = (e) => {
     e.preventDefault();
-    const author = localStorage.getItem('userId')
-    dispatch(createQuiz({author, quizTitle}));
+    const author = localStorage.getItem('userId');
+    dispatch(createQuiz({ author, title: quizTitle }));
     setQuizTitle('');
     setOption1('');
     setOption2('');

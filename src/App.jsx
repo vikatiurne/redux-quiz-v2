@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Auth from './containers/Auth/Auth';
 import Quiz from './containers/Quiz/Quiz';
 import QuizCreator from './containers/QuizCreator/QuizCreator';
@@ -7,9 +7,30 @@ import Layout from './hoc/Layout/Layout';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Logout from './componets/Logout/Logout';
 import Redister from './containers/Register/Redister';
+import { useEffect } from 'react';
+import { authLogout, autoLogin } from './containers/Auth/authSlice';
 
 function App() {
   const isAutentification = useSelector((state) => !!state.auth.token);
+const dispatch = useDispatch()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      dispatch(autoLogin(null));
+    } else {
+      const experitionDate = new Date(localStorage.getItem('experitionDate'));
+      if (experitionDate <= new Date()) {
+        dispatch(autoLogin(null));
+      } else {
+        dispatch(autoLogin(token));
+        const expires = experitionDate.getTime() - new Date().getTime();
+        setTimeout(() => {
+          dispatch(authLogout(null));
+        }, expires);
+      }
+    }
+  }, [dispatch]);
 
   let routes = (
     <Routes>

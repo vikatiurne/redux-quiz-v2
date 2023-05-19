@@ -7,7 +7,6 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import styles from './QuizList.module.css';
 
 import { fetchDelete, fetchQuizes, selectAllQuizes } from './quizListSlice';
-import { authLogout, autoLogin } from '../Auth/authSlice';
 
 import Loader from '../../componets/UI/Loader/Loader';
 import Modal from '../../componets/UI/Modal/Modal';
@@ -27,24 +26,6 @@ const QuizList = () => {
   useEffect(() => {
     if (quizStatus === 'idle') dispatch(fetchQuizes());
   }, [quizStatus, dispatch]);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      dispatch(autoLogin(null));
-    } else {
-      const experitionDate = new Date(localStorage.getItem('experitionDate'));
-      if (experitionDate <= new Date()) {
-        dispatch(autoLogin(null));
-      } else {
-        dispatch(autoLogin(token));
-        const expires = experitionDate.getTime() - new Date().getTime();
-        setTimeout(() => {
-          dispatch(authLogout(null));
-        }, expires);
-      }
-    }
-  }, [dispatch]);
 
   const clickDeleteHandler = (id) => {
     setActiveQuiz(id);

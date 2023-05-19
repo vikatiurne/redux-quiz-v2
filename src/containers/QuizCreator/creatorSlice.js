@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from '../../axios/axios-quiz';
 
 
-const initialState = { quiz: [], author: '', quizTitle: '' };
+const initialState = { quiz: [], author: '', title: '' };
 
 const creatorSlice = createSlice({
   name: 'creater',
@@ -11,7 +11,7 @@ const creatorSlice = createSlice({
     createQuiz: {
       reducer(state, action) {
         state.author = action.payload.author;
-        state.quizTitle = action.payload.quizTitle;
+        state.title = action.payload.title;
         axios.post('/quizes.json', state);
       },
     },
