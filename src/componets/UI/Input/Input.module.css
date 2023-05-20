@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: column;
 }
+
+.readonly{
+  background: #41a9f4;
+}
+
 .input input {
   width: 100%;
   border: 1px solid transparent;

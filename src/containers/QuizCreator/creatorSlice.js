@@ -1,8 +1,44 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {  createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+import { ref, update } from 'firebase/database';
+import { db } from '../../firebase/firebaseConfig/startFirebase';
+
 import axios from '../../axios/axios-quiz';
 
-
 const initialState = { quiz: [], author: '', title: '' };
+
+export const fetchEditQuestion = createAsyncThunk(
+  '/quizes/fetchEditQuestion/',
+  async ({quizId,questionId,
+    // title,
+    option1,
+    option2,
+    option3,
+    option4,
+    question,
+    rightAnswer,
+  }) => {
+    let questionUpdated = {
+      question,
+      rightAnswer,
+      answers: [
+        { text: option1, id: `${option1}-${rightAnswer}` },
+        { text: option2, id: `${option2}-${rightAnswer}` },
+        { text: option3, id: `${option3}-${rightAnswer}` },
+        { text: option4, id: `${option4}-${rightAnswer}` },
+      ],
+    };
+    update(ref(db, `quizes/${quizId}/quiz/${questionId}`), 
+      questionUpdated
+    );
+    update(ref(db, `quizes/${quizId}/quiz/${questionId}`), 
+      {question, rightAnswer}
+    );
+    // update(ref(db, `quizes/${quizId}`), 
+    //   {title}
+    // );
+  }
+);
 
 const creatorSlice = createSlice({
   name: 'creater',
@@ -16,14 +52,8 @@ const creatorSlice = createSlice({
       },
     },
     addQuestion(state, action) {
-      const {
-        userQuestion,
-        rightAnswer,
-        option1,
-        option2,
-        option3,
-        option4,
-      } = action.payload;
+      const { userQuestion, rightAnswer, option1, option2, option3, option4 } =
+        action.payload;
       const questionItem = {
         question: userQuestion,
         id: state.length + 1,
@@ -41,7 +71,12 @@ const creatorSlice = createSlice({
       state.quiz = action.payload;
     },
   },
+  extraReducers(builder) {
+    builder.addCase(fetchEditQuestion.fulfilled, (state, action) => {
+      state = action.payload;
+    });
+  },
 });
 
-export const { createQuiz, addQuestion, resetCreate } = creatorSlice.actions;
+export const { createQuiz, addQuestion, resetCreate} = creatorSlice.actions;
 export default creatorSlice.reducer;

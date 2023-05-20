@@ -37,7 +37,7 @@ const Quiz = () => {
         <Loader />
       ) : (
         <div className="quizWrapper">
-          <h1>{quiz.quiz.quiz['title']}</h1>
+          <h1>{quiz.quiz['title']}</h1>
           {!quiz.finished && quiz.repeat ? (
             <ActiveQuiz />
           ) : (

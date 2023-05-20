@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -9,8 +10,9 @@ import Input from '../../componets/UI/Input/Input';
 import Select from '../../componets/UI/Select/Select';
 import Modal from '../../componets/UI/Modal/Modal';
 
-import { addQuestion, createQuiz, resetCreate } from './creatorSlice';
+import { addQuestion, createQuiz, fetchEditQuestion, resetCreate } from './creatorSlice';
 import { fetchShowQuizes } from '../QuizList/quizListSlice';
+import { editOpen } from './editSlice';
 
 const QuizCreator = () => {
   const [userQuestion, setUserQuestion] = useState('');
@@ -23,8 +25,24 @@ const QuizCreator = () => {
   const [clickButtonAdd, setClickButtonAdd] = useState(false);
   const [modalActive, setModalActive] = useState(false);
 
+  const quizState = useSelector((state) => state.quiz);
+  const editState = useSelector((state) => state.edit);
   const state = useSelector((state) => state.addQuiz.quiz);
   const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    if (editState.isEdit) {
+      const activeEditQuestion = quizState.quiz.quiz[editState.questionId];
+      setQuizTitle(quizState.quiz.title);
+      setOption1(activeEditQuestion.answers[0].text);
+      setOption2(activeEditQuestion.answers[1].text);
+      setOption3(activeEditQuestion.answers[2].text);
+      setOption4(activeEditQuestion.answers[3].text);
+      setUserQuestion(activeEditQuestion.question);
+      setRightAnswer('відповідь');
+    }
+  }, [editState.isEdit, editState.questionId, quizState.quiz.quiz, quizState.quiz.title]);
 
   const validInputs = {
     title: quizTitle.trim().length > 0,
@@ -44,6 +62,20 @@ const QuizCreator = () => {
   const handlerInputOption3 = (e) => setOption3(e.target.value);
   const handlerInputOption4 = (e) => setOption4(e.target.value);
   const handlerSelect = (e) => setRightAnswer(e.target.value);
+
+  const editQuestionHandler = () => {
+    dispatch(editOpen({ isEdit: false }));
+    dispatch(fetchEditQuestion({
+      option1,
+      option2,
+      option3,
+      option4,
+      question: userQuestion,
+      rightAnswer,
+      questionId:editState.questionId, 
+      quizId: editState.quizId
+    }))
+  };
 
   const addQuestionHandler = () => {
     dispatch(
@@ -131,16 +163,16 @@ const QuizCreator = () => {
         <div className={styles.formWrapper}>
           <form onSubmit={(e) => e.preventDefault()}>
             <Input
-              className={styles.quizCreatorInput}
+            readOnlyStyle = {editState.isEdit?styles.readonly:null}
               inputType="text"
               onChangeInput={handlerInputTitle}
               placeholder="Назва тесту"
               value={quizTitle}
               inputLabel="Назва тесту"
               valid={validInputs.quizTitle}
+              readonly={editState.isEdit}
             />
             <Input
-              className={styles.quizCreatorInput}
               inputType="text"
               onChangeInput={handlerInputUserQuestion}
               placeholder="Питання"
@@ -153,7 +185,6 @@ const QuizCreator = () => {
             <p>Варіанти відповіді:</p>
             <div className={styles.answerOptions}>
               <Input
-                className={styles.quizCreatorInput}
                 inputType="text"
                 onChangeInput={handlerInputOption1}
                 placeholder="варіант 1"
@@ -163,7 +194,6 @@ const QuizCreator = () => {
                 tached={true}
               />
               <Input
-                className={styles.quizCreatorInput}
                 inputType="text"
                 onChangeInput={handlerInputOption2}
                 placeholder="варіант 2"
@@ -173,7 +203,6 @@ const QuizCreator = () => {
                 tached={true}
               />
               <Input
-                className={styles.quizCreatorInput}
                 inputType="text"
                 onChangeInput={handlerInputOption3}
                 placeholder="варіант 3"
@@ -183,7 +212,6 @@ const QuizCreator = () => {
                 tached={true}
               />
               <Input
-                className={styles.quizCreatorInput}
                 inputType="text"
                 onChangeInput={handlerInputOption4}
                 placeholder="варіант 4"
@@ -206,37 +234,70 @@ const QuizCreator = () => {
               valid={validInputs.select}
             />
             <div className={styles.quizCreatorActive}>
-              <Button
-                onclick={addQuestionHandler}
-                type="primary"
-                valid={
-                  validInputs.option4 &&
-                  validInputs.option3 &&
-                  validInputs.option2 &&
-                  validInputs.option1 &&
-                  validInputs.select &&
-                  validInputs.title &&
-                  validInputs.question
-                }
-              >
-                Додати питання
-              </Button>
-              <Button
-                onclick={createQuizHandler}
-                type="success"
-                valid={validInputs.createButton}
-              >
-                Зберегти тест
-              </Button>
-              <Link to="/">
-                <Button
-                  valid
-                  type="success"
-                  onclick={() => dispatch(fetchShowQuizes())}
-                >
-                  Список тестів
-                </Button>
-              </Link>
+              {!editState.isEdit ? (
+                <>
+                  <Button
+                    onclick={addQuestionHandler}
+                    type="primary"
+                    valid={
+                      validInputs.option4 &&
+                      validInputs.option3 &&
+                      validInputs.option2 &&
+                      validInputs.option1 &&
+                      validInputs.select &&
+                      validInputs.title &&
+                      validInputs.question
+                    }
+                  >
+                    Додати питання
+                  </Button>
+                  <Button
+                    onclick={createQuizHandler}
+                    type="success"
+                    valid={validInputs.createButton}
+                  >
+                    Зберегти тест
+                  </Button>
+                  <Link to="/">
+                    <Button
+                      valid
+                      type="success"
+                      onclick={() => dispatch(fetchShowQuizes())}
+                    >
+                      Список тестів
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to={`../quiz/${editState.quizId}`}>
+                    <Button
+                      onclick={editQuestionHandler}
+                      type="success"
+                      valid={
+                        validInputs.option4 &&
+                        validInputs.option3 &&
+                        validInputs.option2 &&
+                        validInputs.option1 &&
+                        validInputs.select &&
+                        validInputs.title &&
+                        validInputs.question
+                      }
+                    >
+                      Зберегти
+                    </Button>
+                  </Link>
+                  <Link to={`../quiz/${editState.quizId}`}>
+                    <Button
+                      valid
+                      type="primary"
+                      onclick={() => dispatch(editOpen({ isEdit: false }))}
+                    >
+                      Відмінити
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </form>
         </div>

@@ -27,8 +27,9 @@
   grid-template-columns: 1fr 1fr;
   gap: 0.3em;
 }
-.quizCreatorInput {
-  padding: 0.2em;
+.readonly{
+  background: #daeefb;
+  color: rgb(155, 155, 155);
 }
 .formWrapper {
   margin-left: 10px;
@@ -45,6 +46,7 @@
   background-color: #f4efef;
   padding: 1em;
 }
+
 .quizCreator select {
   padding: 0.5em;
   /* margin: 0 auto; */

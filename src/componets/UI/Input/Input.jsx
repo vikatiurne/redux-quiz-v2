@@ -2,6 +2,7 @@ import styles from './Input.module.css';
 
 const Input = (props) => {
   const {
+    readOnlyStyle = null,
     inputLabel,
     inputType,
     onChangeInput,
@@ -12,6 +13,7 @@ const Input = (props) => {
     inputMessage,
     valid,
     tached,
+    readonly = false,
   } = props;
 
   const htmlFor = `${inputType}-${Math.round(Math.random() * 100)}`;
@@ -20,13 +22,16 @@ const Input = (props) => {
     <div className={styles.input}>
       <label htmlFor={htmlFor}> {inputLabel} </label>
       <input
-        className={!valid && tached ? styles.invalid : null}
+        className={`${
+          !valid && tached ? styles.invalid : null
+        } ${readOnlyStyle}`}
         type={inputType}
         id={htmlFor}
         onChange={onChangeInput}
         placeholder={placeholder}
         value={value}
         autoComplete={autocomplete}
+        readOnly={readonly}
       />
 
       {!valid && tached ? (

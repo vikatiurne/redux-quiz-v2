@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link,useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { RiDeleteBin6Line, RiEdit2Fill } from 'react-icons/ri';
 
 import styles from './ActiveQuiz.module.css';
@@ -11,6 +11,7 @@ import Button from '../UI/Button/Button';
 
 import { fetchDeleteQuestion } from '../../containers/Quiz/quizSlise';
 import { fetchDelete } from '../../containers/QuizList/quizListSlice';
+import { editOpen } from '../../containers/QuizCreator/editSlice';
 
 const ActiveQuiz = () => {
   const [modalActive, setModalActive] = useState(false);
@@ -28,12 +29,16 @@ const ActiveQuiz = () => {
   const author = quiz.quiz.author;
   const user = localStorage.getItem('userId');
 
-  const clickDeleteOk = () => {
+  const clickDeleteOkHandler = () => {
     qtyQuestions !== 1
       ? dispatch(fetchDeleteQuestion({ id, index }))
       : dispatch(fetchDelete({ id }));
     setModalActive(false);
   };
+
+  const clickEditHandler = ()=>{
+    dispatch(editOpen({isEdit:true, quizId:id, questionId:index}))
+  }
 
   const renderModalContent = (
     <div className={styles.modalContent}>
@@ -46,12 +51,12 @@ const ActiveQuiz = () => {
         <p>це єдине питання, бажаєти видалити тест повністю?</p>
       )}
       {qtyQuestions !== 1 ? (
-        <Button type="error" valid={true} title="ok" onclick={clickDeleteOk}>
+        <Button type="error" valid={true} title="ok" onclick={clickDeleteOkHandler}>
           Видалити
         </Button>
       ) : (
         <Link to="/">
-          <Button type="error" valid={true} title="ok" onclick={clickDeleteOk}>
+          <Button type="error" valid={true} title="ok" onclick={clickDeleteOkHandler}>
             Видалити
           </Button>
         </Link>
@@ -82,7 +87,9 @@ const ActiveQuiz = () => {
               className={styles.deleteIcon}
               onClick={() => setModalActive(true)}
             />
-            <RiEdit2Fill className={styles.editIcon} />
+            <Link to="../quiz-creator">
+              <RiEdit2Fill className={styles.editIcon} onClick={clickEditHandler}/>
+            </Link>
           </div>
         )}
         <p className={styles.question}>

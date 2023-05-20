@@ -3,6 +3,7 @@ import quizesReducer from '../containers/QuizList/quizListSlice';
 import quizReducer from '../containers/Quiz/quizSlise';
 import createReducer from '../containers/QuizCreator/creatorSlice'
 import authReducer from '../containers/Auth/authSlice'
+import editReducer from '../containers/QuizCreator/editSlice'
 
 export default configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
     quiz: quizReducer,
     addQuiz: createReducer,
     auth: authReducer,
+    edit: editReducer,
   }
 });

@@ -12,7 +12,7 @@ import { authLogout, autoLogin } from './containers/Auth/authSlice';
 
 function App() {
   const isAutentification = useSelector((state) => !!state.auth.token);
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
