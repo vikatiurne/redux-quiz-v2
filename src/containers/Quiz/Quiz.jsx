@@ -18,8 +18,6 @@ const Quiz = () => {
   const quiz = useSelector((state) => selectQuizById(state, id));
   const quizStatus = useSelector((state) => state.quiz.status);
  
-
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchQuiz(id));
@@ -37,7 +35,7 @@ const Quiz = () => {
         <Loader />
       ) : (
         <div className="quizWrapper">
-          <h1>{quiz.quiz['title']}</h1>
+          <h1>{quiz.quiz.title}</h1>
           {!quiz.finished && quiz.repeat ? (
             <ActiveQuiz />
           ) : (

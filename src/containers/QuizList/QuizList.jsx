@@ -28,18 +28,24 @@ const QuizList = () => {
   const [editedTitle, setEditedTitle] = useState('');
 
   const quizes = useSelector(selectAllQuizes);
+  
   const user = localStorage.getItem('userId');
-
+  
   const quizStatus = useSelector((state) => state.quizes.status);
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     if (editField) setEditedTitle(activeQuiz.title.split('.')[1].trim());
+    console.log(activeQuiz)
   }, [editField, activeQuiz]);
 
   useEffect(() => {
     if (quizStatus === 'idle') dispatch(fetchQuizes());
   }, [quizStatus, dispatch]);
+
+  // useEffect(() => {
+  //   if(!clickEdit) dispatch(fetchShowQuizes());
+  // }, [clickEdit, dispatch]);
 
   const clickDeleteHandler = (id) => {
     setActiveQuiz(id);
@@ -89,24 +95,26 @@ const QuizList = () => {
     <div className={styles.modalContent}>
       <p className={styles.modalTitle}>&#128221;</p>
       <p>оберіть дію, яку треба виконати</p>
-      <Button
-        type="success"
-        valid={true}
-        title="Змінити назву"
-        onclick={() => setEditField(true)}
-      >
-        Змінити назву
-      </Button>
-      <Link to="../quiz-creator">
+      <div className={styles.modalControl}>
         <Button
           type="success"
           valid={true}
-          title="Додати питання"
-          onclick={clickAddQuestionHandler}
+          title="Змінити назву"
+          onclick={() => setEditField(true)}
         >
-          Додати питання
+          Змінити назву
         </Button>
-      </Link>
+        <Link to="../quiz-creator">
+          <Button
+            type="success"
+            valid={true}
+            title="Додати питання"
+            onclick={clickAddQuestionHandler}
+          >
+            Додати питання
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 
@@ -154,11 +162,14 @@ const QuizList = () => {
       </li>
     );
   });
-
+console.log(clickEdit)
   return (
     <>
       {modalActive && (
-        <Modal active={modalActive} setActive={setModalActive}>
+        <Modal active={modalActive}   setActive={() => {
+          setModalActive();
+          setClickEdit(false);
+        }}>
           {renderModalContent}
         </Modal>
       )}
@@ -168,6 +179,7 @@ const QuizList = () => {
           setActive={() => {
             setModalActive();
             setEditField(false);
+            setClickEdit(false);
           }}
         >
           {renderModalContentEdit}

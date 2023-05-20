@@ -41,9 +41,11 @@
   justify-content: space-between;
 }
 
-.icons{
-
+.modalControl {
+  display: flex;
+  justify-content: center;
 }
+
 .editIcon,
 .deleteIcon {
   padding-top: 0.3em;
@@ -61,13 +63,13 @@
 }
 
 .editIcon:hover {
-  color: rgb(225, 232, 10)
+  color: rgb(225, 232, 10);
 }
 .deleteIcon:hover {
   color: red;
 }
 
-.modalContent{
+.modalContent {
   text-align: center;
 }
 
@@ -83,21 +85,22 @@
   color: #290c4f;
 }
 
-.editInput{
+.editInput {
   padding-top: 1em;
   background-color: transparent;
   outline: none;
   border: none;
   border-bottom: 1px solid hsla(0, 0%, 100%, 0.3);
   font-size: 1em;
-  color: white; 
+  color: white;
   text-align: center;
 }
 
 @media (max-width: 400px) {
-  .modalContent button {
+  .modalControl{
     flex-direction: column;
-    align-items: center;
+  }
+  .modalControl button {
     margin-left: 0;
     margin-right: 0;
   }

@@ -49,7 +49,7 @@ const Finished = () => {
           Повторити
         </Button>
         <Link to="..">
-          <Button type="success" valid={true}>
+          <Button type="success" valid={true} >
             Перейти до списку тестів
           </Button>
         </Link>

@@ -31,12 +31,15 @@ const QuizCreator = () => {
   const [rightAnswer, setRightAnswer] = useState('відповідь');
   const [clickButtonAdd, setClickButtonAdd] = useState(false);
   const [modalActive, setModalActive] = useState(false);
-
+  
   const quizState = useSelector((state) => state.quiz);
   const quizes = useSelector((state) => state.quizes.quizes);
   const editState = useSelector((state) => state.edit);
   const state = useSelector((state) => state.addQuiz.quiz);
   const dispatch = useDispatch();
+  const currentQuiz=quizes.filter((quiz) => quiz.id === editState.quizId).length
+  const [index, setIndex]=useState(currentQuiz)
+
 
   useEffect(() => {
     if (editState.isEdit) {
@@ -91,8 +94,9 @@ const QuizCreator = () => {
   };
 
   const addQuestionHandler = () => {
+    setIndex(prev=>prev+1)
     editState.isAdd
-      ? dispatch(
+      ?dispatch(
           fetchAddQuestion({
             quizId: editState.quizId,
             option1,
@@ -101,9 +105,10 @@ const QuizCreator = () => {
             option4,
             question: userQuestion,
             rightAnswer,
-            position: quizState.quiz.quiz.length,
+            position: index,
           })
         )
+      
       : dispatch(
           addQuestion({
             userQuestion,

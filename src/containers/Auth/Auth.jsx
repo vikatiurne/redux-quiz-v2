@@ -126,7 +126,7 @@ const Auth = () => {
           <br />
           <span>
             або пройдіть реєстрацію <br /> чи використайте e:mail{' '}
-            <b>test@test.com</b> пароль <b>98765432</b>
+            <b>test@ukr.com</b> пароль <b>01234567</b>
           </span>
         </p>
         <div className={styles.formWrapper}>

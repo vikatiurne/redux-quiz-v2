@@ -34,7 +34,8 @@ export const fetchDeleteQuestion = createAsyncThunk(
         quizUpdated.push(cloneResponse[key]);
       }
     }
-    update(ref(db, `quizes/${id}`), {quiz:quizUpdated[0].quiz});
+    console.log(quizUpdated)
+    update(ref(db, `quizes/${id}`), quizUpdated[0]);
     const res = await axios.get(`/quizes/${id}.json`);
     return res.data;
   }

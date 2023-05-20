@@ -67,7 +67,7 @@ const authSlice = createSlice({
         const expires = payload.expiresIn;
         setTimeout(() => {
           authLogout({ token: null, user:'' });
-        }, expires*1000);
+        }, expires);
       })
       .addCase(fetchAuth.rejected, (state) => {
         state.status = 'error'

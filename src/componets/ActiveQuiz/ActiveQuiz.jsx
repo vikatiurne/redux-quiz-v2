@@ -9,7 +9,7 @@ import AnswersList from '../AnswersList/AnswersList';
 import Modal from '../UI/Modal/Modal';
 import Button from '../UI/Button/Button';
 
-import { fetchDeleteQuestion } from '../../containers/Quiz/quizSlise';
+import { fetchDeleteQuestion, fetchQuiz } from '../../containers/Quiz/quizSlise';
 import { fetchDelete } from '../../containers/QuizList/quizListSlice';
 import { editOpen } from '../../containers/QuizCreator/editSlice';
 
@@ -30,9 +30,10 @@ const ActiveQuiz = () => {
   const user = localStorage.getItem('userId');
 
   const clickDeleteOkHandler = () => {
-    qtyQuestions !== 1
-      ? dispatch(fetchDeleteQuestion({ id, index }))
-      : dispatch(fetchDelete({ id }));
+    if(qtyQuestions !== 1){
+      dispatch(fetchDeleteQuestion({ id, index }))
+    }
+      dispatch(fetchDelete({ id }));
     setModalActive(false);
   };
 
