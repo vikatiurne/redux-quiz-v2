@@ -41,22 +41,28 @@
   justify-content: space-between;
 }
 
+.icons{
+
+}
+.editIcon,
 .deleteIcon {
   padding-top: 0.3em;
   margin-left: 0.3em;
   cursor: pointer;
   color: #290c4f;
-  font-size: 2em;
+  font-size: 1.7em;
   transition: transform 0.3s;
 }
 
-
+.editIcon:hover,
 .deleteIcon:hover {
   cursor: pointer;
   transform: scale(1.4);
 }
 
-
+.editIcon:hover {
+  color: rgb(225, 232, 10)
+}
 .deleteIcon:hover {
   color: red;
 }
@@ -75,6 +81,17 @@
   text-align: center;
   padding-top: 0.4em;
   color: #290c4f;
+}
+
+.editInput{
+  padding-top: 1em;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.3);
+  font-size: 1em;
+  color: white; 
+  text-align: center;
 }
 
 @media (max-width: 400px) {

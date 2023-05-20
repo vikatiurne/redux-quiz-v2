@@ -1,27 +1,40 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { v4 as uuidv4 } from 'uuid';
-import { RiDeleteBin6Line } from 'react-icons/ri';
+import { RiDeleteBin6Line, RiEdit2Fill } from 'react-icons/ri';
 
 import styles from './QuizList.module.css';
 
-import { fetchDelete, fetchQuizes, selectAllQuizes } from './quizListSlice';
+import {
+  fetchDelete,
+  fetchQuizes,
+  fetchShowQuizes,
+  selectAllQuizes,
+} from './quizListSlice';
 
 import Loader from '../../componets/UI/Loader/Loader';
 import Modal from '../../componets/UI/Modal/Modal';
 import Button from '../../componets/UI/Button/Button';
+import { fetchEditTitle } from '../QuizCreator/creatorSlice';
 
 const QuizList = () => {
   const [modalActive, setModalActive] = useState(false);
   const [activeQuiz, setActiveQuiz] = useState(null);
+  const [clickEdit, setClickEdit] = useState(false);
+  const [editField, setEditField] = useState(false);
+  const [editedTitle, setEditedTitle] = useState('');
 
   const quizes = useSelector(selectAllQuizes);
   const user = localStorage.getItem('userId');
 
   const quizStatus = useSelector((state) => state.quizes.status);
-
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (editField) setEditedTitle(activeQuiz.title.split('.')[1].trim());
+  }, [editField, activeQuiz]);
 
   useEffect(() => {
     if (quizStatus === 'idle') dispatch(fetchQuizes());
@@ -31,12 +44,26 @@ const QuizList = () => {
     setActiveQuiz(id);
     setModalActive(true);
   };
+
   const clickDeleteOk = () => {
     dispatch(fetchDelete(activeQuiz));
     setModalActive(false);
   };
 
-  const renderModalContent = (
+  const clickEditTitleHandler = () => {
+    dispatch(fetchEditTitle({ title: editedTitle, quizId: activeQuiz.id }));
+    setModalActive(false);
+    setEditField(false)
+    dispatch(fetchShowQuizes());
+  };
+
+  const clickEditHandler = (id) => {
+    setActiveQuiz(id);
+    setModalActive(true);
+    setClickEdit(true);
+  };
+
+  const renderModalContent = !clickEdit ? (
     <div className={styles.modalContent}>
       <p className={styles.modalTitle}>Увага &#129300;</p>
       <p>впевнені, що бажаєте видалити тест без можливості його відновлення?</p>
@@ -52,6 +79,50 @@ const QuizList = () => {
         Відмінити
       </Button>
     </div>
+  ) : (
+    <div className={styles.modalContent}>
+      <p className={styles.modalTitle}>&#128221;</p>
+      <p>оберіть дію, яку треба виконати</p>
+      <Button
+        type="primary"
+        valid={true}
+        title="Змінити назву"
+        onclick={() => setEditField(true)}
+      >
+        Змінити назву
+      </Button>
+      <Button
+        type="primary"
+        valid={true}
+        title="Додати питання"
+        onclick={() => {}}
+      >
+        Додати питання
+      </Button>
+    </div>
+  );
+
+  const renderModalContentEdit = editField && (
+    <div className={styles.modalContent}>
+      <p className={styles.modalTitle}>&#128221;</p>
+      <input
+        className={styles.editInput}
+        type="text"
+        value={editedTitle}
+        onChange={(e) => setEditedTitle(e.target.value)}
+        autoFocus
+      />
+      <div>
+        <Button
+          type="success"
+          valid={true}
+          title="Зберегти"
+          onclick={clickEditTitleHandler}
+        >
+          Зберегти
+        </Button>
+      </div>
+    </div>
   );
 
   const renderQuizList = quizes.map((quiz) => {
@@ -60,10 +131,16 @@ const QuizList = () => {
         <div className={styles.quizOfList}>
           <NavLink to={`quiz/${quiz.id}`}>{quiz.title}</NavLink>
           {user === quiz.author && (
+            <div className={styles.icons}>
               <RiDeleteBin6Line
                 className={styles.deleteIcon}
                 onClick={() => clickDeleteHandler(quiz)}
               />
+              <RiEdit2Fill
+                className={styles.editIcon}
+                onClick={() => clickEditHandler(quiz)}
+              />
+            </div>
           )}
         </div>
       </li>
@@ -72,9 +149,17 @@ const QuizList = () => {
 
   return (
     <>
-      {modalActive && (
+      {modalActive && clickEdit && (
         <Modal active={modalActive} setActive={setModalActive}>
           {renderModalContent}
+        </Modal>
+      )}
+      {modalActive && editField && (
+        <Modal active={modalActive} setActive={()=>{
+          setModalActive()
+          setEditField(false)
+          }}>
+          {renderModalContentEdit}
         </Modal>
       )}
       <div className={styles.quizList}>

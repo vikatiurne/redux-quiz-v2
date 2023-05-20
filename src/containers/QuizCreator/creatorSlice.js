@@ -1,4 +1,4 @@
-import {  createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { ref, update } from 'firebase/database';
 import { db } from '../../firebase/firebaseConfig/startFirebase';
@@ -9,8 +9,9 @@ const initialState = { quiz: [], author: '', title: '' };
 
 export const fetchEditQuestion = createAsyncThunk(
   '/quizes/fetchEditQuestion/',
-  async ({quizId,questionId,
-    // title,
+  async ({
+    quizId,
+    questionId,
     option1,
     option2,
     option3,
@@ -28,15 +29,18 @@ export const fetchEditQuestion = createAsyncThunk(
         { text: option4, id: `${option4}-${rightAnswer}` },
       ],
     };
-    update(ref(db, `quizes/${quizId}/quiz/${questionId}`), 
-      questionUpdated
-    );
-    update(ref(db, `quizes/${quizId}/quiz/${questionId}`), 
-      {question, rightAnswer}
-    );
-    // update(ref(db, `quizes/${quizId}`), 
-    //   {title}
-    // );
+    update(ref(db, `quizes/${quizId}/quiz/${questionId}`), questionUpdated);
+    update(ref(db, `quizes/${quizId}/quiz/${questionId}`), {
+      question,
+      rightAnswer,
+    });
+  }
+);
+export const fetchEditTitle = createAsyncThunk(
+  '/quizes/fetchEditTitle/',
+  async ({ quizId, title }) => {
+    update(ref(db, `quizes/${quizId}`), { title });
+    return title
   }
 );
 
@@ -73,10 +77,10 @@ const creatorSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(fetchEditQuestion.fulfilled, (state, action) => {
-      state = action.payload;
-    });
+      state.title = action.payload;
+    })
   },
 });
 
-export const { createQuiz, addQuestion, resetCreate} = creatorSlice.actions;
+export const { createQuiz, addQuestion, resetCreate } = creatorSlice.actions;
 export default creatorSlice.reducer;
