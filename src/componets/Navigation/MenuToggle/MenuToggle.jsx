@@ -4,9 +4,9 @@ import { FaTimes, FaBars } from 'react-icons/fa';
 import styles from './MenuToggle.module.css';
 
 const MenuToggle = ({ isOpen, onToggle }) => {
-  const isEdit = useSelector((state) => state.edit.isEdit);
+  const edit = useSelector((state) => state.edit);
   return isOpen ? (
-    !isEdit && (
+    (!edit.isEdit && !edit.isAdd) && (
       <FaBars className={styles.menuToggle} onClick={() => onToggle()} />
     )
   ) : (

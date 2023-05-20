@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -18,6 +18,7 @@ import Loader from '../../componets/UI/Loader/Loader';
 import Modal from '../../componets/UI/Modal/Modal';
 import Button from '../../componets/UI/Button/Button';
 import { fetchEditTitle } from '../QuizCreator/creatorSlice';
+import { addNewQuestion } from '../QuizCreator/editSlice';
 
 const QuizList = () => {
   const [modalActive, setModalActive] = useState(false);
@@ -53,8 +54,13 @@ const QuizList = () => {
   const clickEditTitleHandler = () => {
     dispatch(fetchEditTitle({ title: editedTitle, quizId: activeQuiz.id }));
     setModalActive(false);
-    setEditField(false)
+    setEditField(false);
     dispatch(fetchShowQuizes());
+  };
+
+  const clickAddQuestionHandler = () => {
+    dispatch(addNewQuestion({ isAdd: true, quizId: activeQuiz.id }));
+    setModalActive(false);
   };
 
   const clickEditHandler = (id) => {
@@ -84,21 +90,23 @@ const QuizList = () => {
       <p className={styles.modalTitle}>&#128221;</p>
       <p>оберіть дію, яку треба виконати</p>
       <Button
-        type="primary"
+        type="success"
         valid={true}
         title="Змінити назву"
         onclick={() => setEditField(true)}
       >
         Змінити назву
       </Button>
-      <Button
-        type="primary"
-        valid={true}
-        title="Додати питання"
-        onclick={() => {}}
-      >
-        Додати питання
-      </Button>
+      <Link to="../quiz-creator">
+        <Button
+          type="success"
+          valid={true}
+          title="Додати питання"
+          onclick={clickAddQuestionHandler}
+        >
+          Додати питання
+        </Button>
+      </Link>
     </div>
   );
 
@@ -149,16 +157,19 @@ const QuizList = () => {
 
   return (
     <>
-      {modalActive && clickEdit && (
+      {modalActive && (
         <Modal active={modalActive} setActive={setModalActive}>
           {renderModalContent}
         </Modal>
       )}
       {modalActive && editField && (
-        <Modal active={modalActive} setActive={()=>{
-          setModalActive()
-          setEditField(false)
-          }}>
+        <Modal
+          active={modalActive}
+          setActive={() => {
+            setModalActive();
+            setEditField(false);
+          }}
+        >
           {renderModalContentEdit}
         </Modal>
       )}

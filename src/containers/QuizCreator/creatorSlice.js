@@ -1,11 +1,31 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { ref, update } from 'firebase/database';
+import { ref, set, update } from 'firebase/database';
 import { db } from '../../firebase/firebaseConfig/startFirebase';
 
 import axios from '../../axios/axios-quiz';
 
 const initialState = { quiz: [], author: '', title: '' };
+
+const createQuestion = (
+  question,
+  rightAnswer,
+  option1,
+  option2,
+  option3,
+  option4
+) => {
+  return {
+    question,
+    rightAnswer,
+    answers: [
+      { text: option1, id: `${option1}-${rightAnswer}` },
+      { text: option2, id: `${option2}-${rightAnswer}` },
+      { text: option3, id: `${option3}-${rightAnswer}` },
+      { text: option4, id: `${option4}-${rightAnswer}` },
+    ],
+  };
+};
 
 export const fetchEditQuestion = createAsyncThunk(
   '/quizes/fetchEditQuestion/',
@@ -19,28 +39,48 @@ export const fetchEditQuestion = createAsyncThunk(
     question,
     rightAnswer,
   }) => {
-    let questionUpdated = {
+    const questionUpdated = createQuestion(
       question,
       rightAnswer,
-      answers: [
-        { text: option1, id: `${option1}-${rightAnswer}` },
-        { text: option2, id: `${option2}-${rightAnswer}` },
-        { text: option3, id: `${option3}-${rightAnswer}` },
-        { text: option4, id: `${option4}-${rightAnswer}` },
-      ],
-    };
+      option1,
+      option2,
+      option3,
+      option4
+    );
     update(ref(db, `quizes/${quizId}/quiz/${questionId}`), questionUpdated);
-    update(ref(db, `quizes/${quizId}/quiz/${questionId}`), {
-      question,
-      rightAnswer,
-    });
   }
 );
+
+export const fetchAddQuestion = createAsyncThunk(
+  '/quizes/fetchAddQuestion/',
+  async ({
+    position,
+    quizId,
+    option1,
+    option2,
+    option3,
+    option4,
+    question,
+    rightAnswer,
+  }) => {
+    const questionUpdated = createQuestion(
+      question,
+      rightAnswer,
+      option1,
+      option2,
+      option3,
+      option4
+    );
+    set(ref(db, `quizes/${quizId}/quiz/${position}`), questionUpdated);
+    return questionUpdated;
+  }
+);
+
 export const fetchEditTitle = createAsyncThunk(
   '/quizes/fetchEditTitle/',
   async ({ quizId, title }) => {
     update(ref(db, `quizes/${quizId}`), { title });
-    return title
+    return title;
   }
 );
 
@@ -58,17 +98,14 @@ const creatorSlice = createSlice({
     addQuestion(state, action) {
       const { userQuestion, rightAnswer, option1, option2, option3, option4 } =
         action.payload;
-      const questionItem = {
-        question: userQuestion,
-        id: state.length + 1,
+      const questionItem = createQuestion(
+        userQuestion,
         rightAnswer,
-        answers: [
-          { text: option1, id: `${option1}-${rightAnswer}` },
-          { text: option2, id: `${option2}-${rightAnswer}` },
-          { text: option3, id: `${option3}-${rightAnswer}` },
-          { text: option4, id: `${option4}-${rightAnswer}` },
-        ],
-      };
+        option1,
+        option2,
+        option3,
+        option4
+      );
       state.quiz.push(questionItem);
     },
     resetCreate(state, action) {
@@ -76,9 +113,13 @@ const creatorSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(fetchEditQuestion.fulfilled, (state, action) => {
-      state.title = action.payload;
-    })
+    builder
+      .addCase(fetchEditQuestion.fulfilled, (state, action) => {
+        state.title = action.payload;
+      })
+      .addCase(fetchAddQuestion.fulfilled, (state, action) => {
+        state.quiz = action.payload;
+      });
   },
 });
 

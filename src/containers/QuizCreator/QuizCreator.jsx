@@ -10,9 +10,16 @@ import Input from '../../componets/UI/Input/Input';
 import Select from '../../componets/UI/Select/Select';
 import Modal from '../../componets/UI/Modal/Modal';
 
-import { addQuestion, createQuiz, fetchEditQuestion, resetCreate } from './creatorSlice';
+import {
+  addQuestion,
+  createQuiz,
+  fetchAddQuestion,
+  fetchEditQuestion,
+  resetCreate,
+} from './creatorSlice';
 import { fetchShowQuizes } from '../QuizList/quizListSlice';
 import { editOpen } from './editSlice';
+import { addNewQuestion } from './editSlice';
 
 const QuizCreator = () => {
   const [userQuestion, setUserQuestion] = useState('');
@@ -26,10 +33,10 @@ const QuizCreator = () => {
   const [modalActive, setModalActive] = useState(false);
 
   const quizState = useSelector((state) => state.quiz);
+  const quizes = useSelector((state) => state.quizes.quizes);
   const editState = useSelector((state) => state.edit);
   const state = useSelector((state) => state.addQuiz.quiz);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     if (editState.isEdit) {
@@ -42,8 +49,12 @@ const QuizCreator = () => {
       setUserQuestion(activeEditQuestion.question);
       setRightAnswer('відповідь');
     }
-  }, [editState.isEdit, editState.questionId, quizState.quiz.quiz, quizState.quiz.title]);
-
+  }, [
+    editState.isEdit,
+    editState.questionId,
+    quizState.quiz.quiz,
+    quizState.quiz.title,
+  ]);
   const validInputs = {
     title: quizTitle.trim().length > 0,
     question: userQuestion.trim().length > 0,
@@ -65,29 +76,44 @@ const QuizCreator = () => {
 
   const editQuestionHandler = () => {
     dispatch(editOpen({ isEdit: false }));
-    dispatch(fetchEditQuestion({
-      option1,
-      option2,
-      option3,
-      option4,
-      question: userQuestion,
-      rightAnswer,
-      questionId:editState.questionId, 
-      quizId: editState.quizId
-    }))
-  };
-
-  const addQuestionHandler = () => {
     dispatch(
-      addQuestion({
-        userQuestion,
+      fetchEditQuestion({
         option1,
         option2,
         option3,
         option4,
+        question: userQuestion,
         rightAnswer,
+        questionId: editState.questionId,
+        quizId: editState.quizId,
       })
     );
+  };
+
+  const addQuestionHandler = () => {
+    editState.isAdd
+      ? dispatch(
+          fetchAddQuestion({
+            quizId: editState.quizId,
+            option1,
+            option2,
+            option3,
+            option4,
+            question: userQuestion,
+            rightAnswer,
+            position: quizState.quiz.quiz.length,
+          })
+        )
+      : dispatch(
+          addQuestion({
+            userQuestion,
+            option1,
+            option2,
+            option3,
+            option4,
+            rightAnswer,
+          })
+        );
     setQuizTitle(quizTitle);
     setOption1('');
     setOption2('');
@@ -163,13 +189,22 @@ const QuizCreator = () => {
         <div className={styles.formWrapper}>
           <form onSubmit={(e) => e.preventDefault()}>
             <Input
-            readOnlyStyle = {editState.isEdit?styles.readonly:null}
+              readOnlyStyle={
+                editState.isAdd || editState.isEdit ? styles.readonly : null
+              }
               inputType="text"
               onChangeInput={handlerInputTitle}
               placeholder="Назва тесту"
-              value={quizTitle}
+              value={
+                editState.isAdd
+                  ? quizes
+                      .filter((quiz) => quiz.id === editState.quizId)[0]
+                      .title.split('.')[1]
+                      .trim()
+                  : quizTitle
+              }
               inputLabel="Назва тесту"
-              valid={validInputs.quizTitle}
+              valid={editState.isAdd ? true : validInputs.quizTitle}
               readonly={editState.isEdit}
             />
             <Input
@@ -245,24 +280,28 @@ const QuizCreator = () => {
                       validInputs.option2 &&
                       validInputs.option1 &&
                       validInputs.select &&
-                      validInputs.title &&
                       validInputs.question
                     }
                   >
                     Додати питання
                   </Button>
-                  <Button
-                    onclick={createQuizHandler}
-                    type="success"
-                    valid={validInputs.createButton}
-                  >
-                    Зберегти тест
-                  </Button>
+                  {!editState.isAdd && (
+                    <Button
+                      onclick={createQuizHandler}
+                      type="success"
+                      valid={validInputs.createButton}
+                    >
+                      Зберегти тест
+                    </Button>
+                  )}
                   <Link to="/">
                     <Button
                       valid
                       type="success"
-                      onclick={() => dispatch(fetchShowQuizes())}
+                      onclick={() => {
+                        dispatch(fetchShowQuizes());
+                        dispatch(addNewQuestion({ isAdd: false }));
+                      }}
                     >
                       Список тестів
                     </Button>

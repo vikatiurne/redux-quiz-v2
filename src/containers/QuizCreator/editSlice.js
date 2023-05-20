@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = { isEdit: false, quizId: '', questionId: null };
+const initialState = {
+  isEdit: false,
+  isAdd: false,
+  quizId: '',
+  questionId: null,
+};
 
 const editSlice = createSlice({
   name: 'edit',
@@ -13,10 +18,14 @@ const editSlice = createSlice({
         state.questionId = action.payload.questionId;
       },
     },
+    addNewQuestion: {
+      reducer(state, action) {
+        state.quizId = action.payload.quizId;
+        state.isAdd = action.payload.isAdd;
+      },
+    },
   },
 });
 
-export const {editOpen} = editSlice.actions
-export default editSlice.reducer
-
-
+export const { editOpen, addNewQuestion } = editSlice.actions;
+export default editSlice.reducer;
