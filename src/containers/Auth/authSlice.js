@@ -1,8 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const initialState = { token: null, status:'idle', user:'' };
-
+const initialState = { token: null, status: 'idle', user: '' };
 
 export const fetchAuth = createAsyncThunk(
   'auth/fetchAuth',
@@ -41,18 +40,18 @@ const authSlice = createSlice({
     },
     autoLogin: {
       reducer(state, action) {
-        state.token= action.payload
+        state.token = action.payload;
       },
     },
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchAuth.pending, (state)=>{
-        state.status = 'loading'
+      .addCase(fetchAuth.pending, (state) => {
+        state.status = 'loading';
       })
       .addCase(fetchAuth.fulfilled, (state, { payload }) => {
-        state.status = 'success'
-        state.user = payload.localId
+        state.status = 'success';
+        state.user = payload.localId;
         // для доступа к полученому от сервера token, кладем его в localStorage
         localStorage.setItem('token', payload.idToken);
         // заводим локальный id пользователя
@@ -61,16 +60,12 @@ const authSlice = createSlice({
         // создаем константу с временем когда истекает сессия(получаем текущее время + то время что дает сервер)
         const experitionDate = new Date(
           new Date().getTime() + payload.expiresIn * 1000
-        );
+        )
         // сохраняем время когда истечет сессия в localStorage
-        localStorage.setItem('experitionDate', experitionDate);
-        const expires = payload.expiresIn;
-        setTimeout(() => {
-          authLogout({ token: null, user:'' });
-        }, expires);
+        localStorage.setItem('experitionDate', experitionDate)
       })
       .addCase(fetchAuth.rejected, (state) => {
-        state.status = 'error'
+        state.status = 'error';
       });
   },
 });

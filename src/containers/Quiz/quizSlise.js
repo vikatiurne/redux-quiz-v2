@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ref, update } from 'firebase/database';
 
 import axios from '../../axios/axios-quiz';
+import { ref, update } from 'firebase/database';
 import { db, getData } from '../../firebase/firebaseConfig/startFirebase';
 
 const initialState = {
@@ -26,15 +26,13 @@ export const fetchDeleteQuestion = createAsyncThunk(
   '/quizes/fetchDeleteQuestion/',
   async ({ id, index }) => {
     const response = await getData();
-    const cloneResponse = JSON.parse(JSON.stringify(response));
     const quizUpdated = [];
-    for (let key in cloneResponse) {
+    for (let key in response) {
       if (id === key) {
-        cloneResponse[key].quiz.splice(index, 1);
-        quizUpdated.push(cloneResponse[key]);
+        response[key].quiz.splice(index, 1);
+        quizUpdated.push(response[key]);
       }
     }
-    console.log(quizUpdated)
     update(ref(db, `quizes/${id}`), quizUpdated[0]);
     const res = await axios.get(`/quizes/${id}.json`);
     return res.data;

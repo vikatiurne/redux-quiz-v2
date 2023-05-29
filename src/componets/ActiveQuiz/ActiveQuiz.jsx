@@ -9,7 +9,11 @@ import AnswersList from '../AnswersList/AnswersList';
 import Modal from '../UI/Modal/Modal';
 import Button from '../UI/Button/Button';
 
-import { fetchDeleteQuestion, fetchQuiz } from '../../containers/Quiz/quizSlise';
+import {
+  fetchDeleteQuestion,
+  fetchQuiz,
+  repeatTest,
+} from '../../containers/Quiz/quizSlise';
 import { fetchDelete } from '../../containers/QuizList/quizListSlice';
 import { editOpen } from '../../containers/QuizCreator/editSlice';
 
@@ -23,23 +27,27 @@ const ActiveQuiz = () => {
   const { id } = useParams();
 
   const numQuestion = quiz.numQuestion + 1;
-  const question = quiz.quiz.quiz[numQuestion - 1].question;
+  const question = quiz.quiz.quiz[index].question;
   const qtyQuestions = quiz.quiz.quiz.length;
 
   const author = quiz.quiz.author;
   const user = localStorage.getItem('userId');
 
   const clickDeleteOkHandler = () => {
-    if(qtyQuestions !== 1){
-      dispatch(fetchDeleteQuestion({ id, index }))
-    }
+    if (qtyQuestions !== 1) {
+      dispatch(fetchDeleteQuestion({ id, index }));
+      dispatch(repeatTest());
+      dispatch(fetchQuiz(id));
+    } else {
       dispatch(fetchDelete({ id }));
+    }
     setModalActive(false);
   };
 
-  const clickEditHandler = ()=>{
-    dispatch(editOpen({isEdit:true, quizId:id, questionId:index}))
-  }
+  const clickEditHandler = () => {
+    dispatch(editOpen({ isEdit: true, quizId: id, questionId: index }));
+    dispatch(fetchQuiz(id));
+  };
 
   const renderModalContent = (
     <div className={styles.modalContent}>
@@ -52,12 +60,22 @@ const ActiveQuiz = () => {
         <p>це єдине питання, бажаєти видалити тест повністю?</p>
       )}
       {qtyQuestions !== 1 ? (
-        <Button type="error" valid={true} title="ok" onclick={clickDeleteOkHandler}>
+        <Button
+          type="error"
+          valid={true}
+          title="ok"
+          onclick={clickDeleteOkHandler}
+        >
           Видалити
         </Button>
       ) : (
         <Link to="/">
-          <Button type="error" valid={true} title="ok" onclick={clickDeleteOkHandler}>
+          <Button
+            type="error"
+            valid={true}
+            title="ok"
+            onclick={clickDeleteOkHandler}
+          >
             Видалити
           </Button>
         </Link>
@@ -89,7 +107,11 @@ const ActiveQuiz = () => {
               onClick={() => setModalActive(true)}
             />
             <Link to="../quiz-creator">
-              <RiEdit2Fill className={styles.editIcon} onClick={clickEditHandler}/>
+              <RiEdit2Fill
+                title="редагувати питання"
+                className={styles.editIcon}
+                onClick={clickEditHandler}
+              />
             </Link>
           </div>
         )}

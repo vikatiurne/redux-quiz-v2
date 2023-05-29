@@ -13,12 +13,12 @@ import {
   fetchShowQuizes,
   selectAllQuizes,
 } from './quizListSlice';
+import { fetchActiveQuiz, fetchEditTitle } from '../QuizCreator/creatorSlice';
+import { addNewQuestion } from '../QuizCreator/editSlice';
 
 import Loader from '../../componets/UI/Loader/Loader';
 import Modal from '../../componets/UI/Modal/Modal';
 import Button from '../../componets/UI/Button/Button';
-import { fetchEditTitle } from '../QuizCreator/creatorSlice';
-import { addNewQuestion } from '../QuizCreator/editSlice';
 
 const QuizList = () => {
   const [modalActive, setModalActive] = useState(false);
@@ -26,26 +26,22 @@ const QuizList = () => {
   const [clickEdit, setClickEdit] = useState(false);
   const [editField, setEditField] = useState(false);
   const [editedTitle, setEditedTitle] = useState('');
+  // const [user, setUser] = useState(localStorage.getItem('userId'));
 
   const quizes = useSelector(selectAllQuizes);
-  
-  const user = localStorage.getItem('userId');
-  
+
   const quizStatus = useSelector((state) => state.quizes.status);
   const dispatch = useDispatch();
-  
+
+  const user = useSelector((state) => state.auth.user);
+
   useEffect(() => {
     if (editField) setEditedTitle(activeQuiz.title.split('.')[1].trim());
-    console.log(activeQuiz)
   }, [editField, activeQuiz]);
 
   useEffect(() => {
     if (quizStatus === 'idle') dispatch(fetchQuizes());
   }, [quizStatus, dispatch]);
-
-  // useEffect(() => {
-  //   if(!clickEdit) dispatch(fetchShowQuizes());
-  // }, [clickEdit, dispatch]);
 
   const clickDeleteHandler = (id) => {
     setActiveQuiz(id);
@@ -61,11 +57,13 @@ const QuizList = () => {
     dispatch(fetchEditTitle({ title: editedTitle, quizId: activeQuiz.id }));
     setModalActive(false);
     setEditField(false);
+    setClickEdit(false);
     dispatch(fetchShowQuizes());
   };
 
   const clickAddQuestionHandler = () => {
     dispatch(addNewQuestion({ isAdd: true, quizId: activeQuiz.id }));
+    dispatch(fetchActiveQuiz({ id: activeQuiz.id }));
     setModalActive(false);
   };
 
@@ -162,14 +160,16 @@ const QuizList = () => {
       </li>
     );
   });
-console.log(clickEdit)
   return (
     <>
       {modalActive && (
-        <Modal active={modalActive}   setActive={() => {
-          setModalActive();
-          setClickEdit(false);
-        }}>
+        <Modal
+          active={modalActive}
+          setActive={() => {
+            setModalActive();
+            setClickEdit(false);
+          }}
+        >
           {renderModalContent}
         </Modal>
       )}

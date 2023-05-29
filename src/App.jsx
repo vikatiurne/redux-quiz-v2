@@ -26,12 +26,11 @@ function App() {
         dispatch(autoLogin(token));
         const expires = experitionDate.getTime() - new Date().getTime();
         setTimeout(() => {
-          dispatch(authLogout(null));
+          dispatch(authLogout({ token: null, user:'' }))
         }, expires);
       }
     }
   }, [dispatch]);
-  
 
   let routes = (
     <Routes>

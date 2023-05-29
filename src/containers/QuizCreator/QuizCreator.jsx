@@ -13,6 +13,7 @@ import Modal from '../../componets/UI/Modal/Modal';
 import {
   addQuestion,
   createQuiz,
+  fetchActiveQuiz,
   fetchAddQuestion,
   fetchEditQuestion,
   resetCreate,
@@ -31,15 +32,19 @@ const QuizCreator = () => {
   const [rightAnswer, setRightAnswer] = useState('відповідь');
   const [clickButtonAdd, setClickButtonAdd] = useState(false);
   const [modalActive, setModalActive] = useState(false);
-  
+
+  const diferentAnswers =
+   option1!==option2 && option1!==option3 && option1!==option4 && 
+   option2!==option3 && option2!==option4 && 
+   option3!==option4 
+
   const quizState = useSelector((state) => state.quiz);
   const quizes = useSelector((state) => state.quizes.quizes);
   const editState = useSelector((state) => state.edit);
   const state = useSelector((state) => state.addQuiz.quiz);
-  const dispatch = useDispatch();
-  const currentQuiz=quizes.filter((quiz) => quiz.id === editState.quizId).length
-  const [index, setIndex]=useState(currentQuiz)
+  const length = useSelector((state) => state.addQuiz.length);
 
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (editState.isEdit) {
@@ -52,12 +57,8 @@ const QuizCreator = () => {
       setUserQuestion(activeEditQuestion.question);
       setRightAnswer('відповідь');
     }
-  }, [
-    editState.isEdit,
-    editState.questionId,
-    quizState.quiz.quiz,
-    quizState.quiz.title,
-  ]);
+  }, [state, editState.isEdit, editState.questionId, quizState]);
+
   const validInputs = {
     title: quizTitle.trim().length > 0,
     question: userQuestion.trim().length > 0,
@@ -94,31 +95,31 @@ const QuizCreator = () => {
   };
 
   const addQuestionHandler = () => {
-    setIndex(prev=>prev+1)
-    editState.isAdd
-      ?dispatch(
-          fetchAddQuestion({
-            quizId: editState.quizId,
-            option1,
-            option2,
-            option3,
-            option4,
-            question: userQuestion,
-            rightAnswer,
-            position: index,
-          })
-        )
-      
-      : dispatch(
-          addQuestion({
-            userQuestion,
-            option1,
-            option2,
-            option3,
-            option4,
-            rightAnswer,
-          })
-        );
+    if (editState.isAdd) {
+      dispatch(
+        fetchAddQuestion({
+          quizId: editState.quizId,
+          option1,
+          option2,
+          option3,
+          option4,
+          question: userQuestion,
+          rightAnswer,
+          position: length,
+        })
+      );
+    } else {
+      dispatch(
+        addQuestion({
+          userQuestion,
+          option1,
+          option2,
+          option3,
+          option4,
+          rightAnswer,
+        })
+      );
+    }
     setQuizTitle(quizTitle);
     setOption1('');
     setOption2('');
@@ -141,18 +142,19 @@ const QuizCreator = () => {
     setOption4('');
     setUserQuestion('');
     setRightAnswer('відповідь');
-    dispatch(resetCreate([]));
+    dispatch(resetCreate({ quiz: [] }));
     setModalActive(true);
   };
 
   const renderModalAddQuestion = (
     <div className={styles.modalContent}>
       <p className={styles.modalTitle}>Питання додано &#128077;</p>
-      <p>можете додати ще питання обо зберегти тест</p>
+      <p>можете додати ще питання обо перейти до списку</p>
       <Button
         onclick={() => {
           setModalActive(false);
           setClickButtonAdd(false);
+          dispatch(fetchActiveQuiz({ id: editState.quizId }));
         }}
         type="success"
         valid={true}
@@ -209,8 +211,8 @@ const QuizCreator = () => {
                   : quizTitle
               }
               inputLabel="Назва тесту"
-              valid={editState.isAdd ? true : validInputs.quizTitle}
-              readonly={editState.isEdit}
+              valid={true}
+              readonly={editState.isEdit || editState.isAdd}
             />
             <Input
               inputType="text"
@@ -285,7 +287,7 @@ const QuizCreator = () => {
                       validInputs.option2 &&
                       validInputs.option1 &&
                       validInputs.select &&
-                      validInputs.question
+                      validInputs.question && diferentAnswers
                     }
                   >
                     Додати питання
@@ -306,6 +308,7 @@ const QuizCreator = () => {
                       onclick={() => {
                         dispatch(fetchShowQuizes());
                         dispatch(addNewQuestion({ isAdd: false }));
+                        dispatch(resetCreate({ quiz: [] }));
                       }}
                     >
                       Список тестів

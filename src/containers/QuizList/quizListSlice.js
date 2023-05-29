@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
 import { getData,db } from '../../firebase/firebaseConfig/startFirebase';
 import { ref, remove } from 'firebase/database';
 
@@ -9,8 +10,8 @@ const initialState = {
   author: '',
 };
 
-const getQuizList = async () => {
- const response = await getData()
+export const getQuizList = async () => {
+  const response = await getData()
   const quizesUpdated = [];
   for (let key in response) {
     quizesUpdated.push({

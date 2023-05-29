@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { ref, set, update } from 'firebase/database';
-import { db } from '../../firebase/firebaseConfig/startFirebase';
+import { db, getData } from '../../firebase/firebaseConfig/startFirebase';
 
 import axios from '../../axios/axios-quiz';
 
-const initialState = { quiz: [], author: '', title: '' };
+const initialState = { quiz: [], author: '', title: '', length: 0 };
 
 const createQuestion = (
   question,
@@ -28,7 +28,7 @@ const createQuestion = (
 };
 
 export const fetchEditQuestion = createAsyncThunk(
-  '/quizes/fetchEditQuestion/',
+  '/creator/fetchEditQuestion/',
   async ({
     quizId,
     questionId,
@@ -51,8 +51,22 @@ export const fetchEditQuestion = createAsyncThunk(
   }
 );
 
+export const fetchActiveQuiz = createAsyncThunk(
+  '/creator/fetchActiveQuiz/',
+  async ({ id }) => {
+    const response = await getData();
+    let activeQuiz;
+    for (let key in response) {
+      if (key === id) {
+        activeQuiz = response[key].quiz.length;
+      }
+    }
+    return activeQuiz;
+  }
+);
+
 export const fetchAddQuestion = createAsyncThunk(
-  '/quizes/fetchAddQuestion/',
+  '/creator/fetchAddQuestion/',
   async ({
     position,
     quizId,
@@ -77,7 +91,7 @@ export const fetchAddQuestion = createAsyncThunk(
 );
 
 export const fetchEditTitle = createAsyncThunk(
-  '/quizes/fetchEditTitle/',
+  '/creator/fetchEditTitle/',
   async ({ quizId, title }) => {
     update(ref(db, `quizes/${quizId}`), { title });
     return title;
@@ -109,7 +123,7 @@ const creatorSlice = createSlice({
       state.quiz.push(questionItem);
     },
     resetCreate(state, action) {
-      state.quiz = action.payload;
+      state.quiz = action.payload.quiz;
     },
   },
   extraReducers(builder) {
@@ -119,7 +133,10 @@ const creatorSlice = createSlice({
       })
       .addCase(fetchAddQuestion.fulfilled, (state, action) => {
         state.quiz = action.payload;
-      });
+      })
+      .addCase(fetchActiveQuiz.fulfilled, (state, action) => {
+        state.length =action.payload;
+      })
   },
 });
 
