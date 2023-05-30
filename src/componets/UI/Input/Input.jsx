@@ -3,6 +3,7 @@ import styles from './Input.module.css';
 const Input = (props) => {
   const {
     readOnlyStyle = null,
+    passwordStyle = null,
     inputLabel,
     inputType,
     onChangeInput,
@@ -24,7 +25,7 @@ const Input = (props) => {
       <input
         className={`${
           !valid && tached ? styles.invalid : null
-        } ${readOnlyStyle}`}
+        } ${readOnlyStyle} ${passwordStyle}`}
         type={inputType}
         id={htmlFor}
         onChange={onChangeInput}

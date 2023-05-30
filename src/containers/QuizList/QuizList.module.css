@@ -5,16 +5,35 @@
   height: 100%;
   padding-bottom: 2.5em;
   text-align: center;
-  background-image: url(../../assets/images/17973871.jpg);
+  background-image: url(../../assets/images/17973871_2.jpg);
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.listWrapper {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.list {
+  margin: 0 auto;
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, 0.7);
+  background-color: rgba(244, 239, 239, 0.8);
+  padding: 1em;
+}
+
 .quizList ul {
   padding-top: 1.2em;
   margin-left: 2.2em;
   text-align: left;
 }
 .quizList div h1 {
+  margin-bottom: 1em;
   padding-top: 2.2em;
   color: #290c4f;
 }
@@ -63,7 +82,7 @@
 }
 
 .editIcon:hover {
-  color: rgb(225, 232, 10);
+  color: rgb(13, 141, 4);
 }
 .deleteIcon:hover {
   color: red;
@@ -97,7 +116,7 @@
 }
 
 @media (max-width: 400px) {
-  .modalControl{
+  .modalControl {
     flex-direction: column;
   }
   .modalControl button {

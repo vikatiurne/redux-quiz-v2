@@ -28,8 +28,10 @@
 }
 
 .modalContent.active {
+  text-align: center;
   transform: scale(1);
 }
+
 .iconClose {
     position: absolute;
     right: 0.4em;

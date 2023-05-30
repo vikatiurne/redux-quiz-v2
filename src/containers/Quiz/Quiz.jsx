@@ -1,4 +1,4 @@
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,7 +17,7 @@ const Quiz = () => {
   const quizNum = useSelector((state) => state.quiz);
   const quiz = useSelector((state) => selectQuizById(state, id));
   const quizStatus = useSelector((state) => state.quiz.status);
- 
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchQuiz(id));
@@ -32,7 +32,9 @@ const Quiz = () => {
   return (
     <div className={styles.quiz}>
       {quizStatus !== 'success' || !quiz ? (
-        <Loader />
+        <div className={styles.loader}>
+          <Loader />
+        </div>
       ) : (
         <div className="quizWrapper">
           <h1>{quiz.quiz.title}</h1>
@@ -40,7 +42,9 @@ const Quiz = () => {
             <ActiveQuiz />
           ) : (
             <>
-              {quizNum.qtyRightAnswers === quizNum.quiz.quiz.length && <Confetti />}
+              {quizNum.qtyRightAnswers === quizNum.quiz.quiz.length && (
+                <Confetti />
+              )}
               <Finished />
             </>
           )}

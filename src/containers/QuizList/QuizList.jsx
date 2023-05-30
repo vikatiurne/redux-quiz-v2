@@ -26,14 +26,13 @@ const QuizList = () => {
   const [clickEdit, setClickEdit] = useState(false);
   const [editField, setEditField] = useState(false);
   const [editedTitle, setEditedTitle] = useState('');
-  // const [user, setUser] = useState(localStorage.getItem('userId'));
 
   const quizes = useSelector(selectAllQuizes);
 
   const quizStatus = useSelector((state) => state.quizes.status);
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.auth.user);
+  const user = localStorage.getItem('userId');
 
   useEffect(() => {
     if (editField) setEditedTitle(activeQuiz.title.split('.')[1].trim());
@@ -186,9 +185,11 @@ const QuizList = () => {
         </Modal>
       )}
       <div className={styles.quizList}>
-        <div>
+        <div className={styles.listWrapper}>
           <h1>Оберіть тест</h1>
-          {quizStatus === 'loading' ? <Loader /> : <ul>{renderQuizList}</ul>}
+          <div className={styles.list}>
+            {quizStatus === 'loading' ? <Loader /> : <ul>{renderQuizList}</ul>}
+          </div>
         </div>
       </div>
     </>

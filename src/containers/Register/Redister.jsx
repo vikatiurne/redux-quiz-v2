@@ -75,7 +75,7 @@ const Redister = () => {
                 type="success"
                 valid={true}
                 title="ok"
-                onclick={() => setModalActive(false)}
+                onclick={clickRegisterOkHandler}
               >
                 Зрозуміло
               </Button>
@@ -124,6 +124,7 @@ const Redister = () => {
               tached={tachedName}
             />
             <Input
+             passwordStyle={styles.password}
               inputType={inputType}
               onChangeInput={handlerInputPass}
               placeholder="Введіть пароль"
@@ -135,14 +136,13 @@ const Redister = () => {
               valid={inputPass.trim().length >= 8}
               tached={tachedPass}
             />
-            <RxEyeClosed
+           {eye? <RxEyeClosed
               onClick={openEyeHandler}
-              className={eye ? styles.visible : styles.hide}
-            />
-            <RxEyeOpen
-              onClick={closeEyeHandler}
-              className={eye ? styles.hide : styles.visible}
-            />
+              className={styles.visible}
+            />:  <RxEyeOpen
+            onClick={closeEyeHandler}
+            className={styles.visible}
+          />}
             <div className={styles.authActive}>
               <Link to="..">
                 <Button

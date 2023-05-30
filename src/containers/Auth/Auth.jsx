@@ -144,6 +144,7 @@ const Auth = () => {
               tached={tachedName}
             />
             <Input
+              passwordStyle={styles.password}
               inputType={inputType}
               onChangeInput={handlerInputPass}
               placeholder="Введіть пароль"
@@ -155,14 +156,14 @@ const Auth = () => {
               valid={inputPass.trim().length >= 8}
               tached={tachedPass}
             />
-            <RxEyeClosed
-              onClick={openEyeHandler}
-              className={eye ? styles.visible : styles.hide}
-            />
-            <RxEyeOpen
-              onClick={closeEyeHandler}
-              className={eye ? styles.hide : styles.visible}
-            />
+            {eye ? (
+              <RxEyeClosed
+                onClick={openEyeHandler}
+                className={styles.visible}
+              />
+            ) : (
+              <RxEyeOpen onClick={closeEyeHandler} className={styles.visible} />
+            )}
             <div className={styles.authActive}>
               <Link to="../register">
                 <Button

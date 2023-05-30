@@ -3,7 +3,7 @@
   flex-direction: column;
 }
 
-.readonly{
+.readonly {
   background: #41a9f4;
 }
 
@@ -17,6 +17,8 @@
   font-size: 1em;
   transition: all 0.3s ease-in-out;
 }
+
+
 .input label {
   padding-left: 0.5em;
   padding-bottom: 0.2em;
@@ -35,4 +37,3 @@
 .invalid {
   background-color: #fde0e3;
 }
-
