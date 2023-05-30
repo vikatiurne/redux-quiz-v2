@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
   const renderModalLeaveActiveQuiz = (
     <div className={styles.modalContent}>
       <p className={styles.modalTitle}>Увага &#129300;</p>
-      <p>впевнені, що бажаєте вийти з тесту і втратити результат</p>
+      <p>впевнені, що бажаєте вийти з тесту і втратити результат?</p>
       <Button
         type="error"
         valid={true}

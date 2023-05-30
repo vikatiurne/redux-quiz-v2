@@ -138,8 +138,8 @@ const Auth = () => {
               value={inputEmail}
               autocomplete="email"
               inputLabel="E:mail"
-              errorMessage="E:mail має містити символ @"
-              inputMessage="E:mail має містити символ @"
+              // errorMessage="E:mail має містити символ @"
+              inputMessage=""
               valid={inputEmail.trim().length >= 8}
               tached={tachedName}
             />
