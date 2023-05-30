@@ -9,3 +9,19 @@
   flex-direction: column;
   flex-grow: 1;
 }
+
+.modalContent {
+  text-align: center;
+}
+
+.modalTitle {
+  text-align: center;
+  font-size: 1.5em;
+  color: red;
+  font-weight: bold;
+}
+.modalTitle + p {
+  text-align: center;
+  padding-top: 0.4em;
+  color: #290c4f;
+}

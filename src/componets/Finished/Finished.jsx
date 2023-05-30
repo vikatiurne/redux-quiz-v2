@@ -4,7 +4,7 @@ import { FiCheck, FiX } from 'react-icons/fi';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { repeatTest } from '../../containers/Quiz/quizSlise';
+import { leaveTest, repeatTest } from '../../containers/Quiz/quizSlise';
 import Button from '../UI/Button/Button';
 
 import styles from './Finished.module.css';
@@ -15,7 +15,10 @@ const Finished = () => {
   const qtyRightAnswers = state.quiz.qtyRightAnswers;
 
   const dispatch = useDispatch();
-  const repeatHandler = () => dispatch(repeatTest());
+  const repeatHandler = () => {
+    dispatch(repeatTest());
+    dispatch(leaveTest(true));
+  };
 
   return (
     <div className={styles.finished}>
@@ -49,7 +52,11 @@ const Finished = () => {
           Повторити
         </Button>
         <Link to="..">
-          <Button type="success" valid={true} >
+          <Button
+            type="success"
+            valid={true}
+            onclick={() => dispatch(leaveTest(false))}
+          >
             Перейти до списку тестів
           </Button>
         </Link>

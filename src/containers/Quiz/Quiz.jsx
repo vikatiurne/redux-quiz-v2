@@ -9,7 +9,7 @@ import Finished from '../../componets/Finished/Finished';
 import Loader from '../../componets/UI/Loader/Loader';
 import Confetti from '../../componets/UI/Confetti/Confetti';
 
-import { fetchQuiz, repeatTest, selectQuizById } from './quizSlise';
+import { fetchQuiz, leaveTest, repeatTest, selectQuizById } from './quizSlise';
 
 const Quiz = () => {
   const { id } = useParams();
@@ -19,6 +19,11 @@ const Quiz = () => {
   const quizStatus = useSelector((state) => state.quiz.status);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(leaveTest(true));
+  }, [dispatch]);
+
   useEffect(() => {
     dispatch(fetchQuiz(id));
   }, [dispatch, id]);

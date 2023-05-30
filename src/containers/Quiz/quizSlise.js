@@ -12,6 +12,7 @@ const initialState = {
   qtyRightAnswers: 0,
   repeat: true,
   status: 'idle',
+  isLeave: false,
 };
 
 export const fetchQuiz = createAsyncThunk(
@@ -80,6 +81,7 @@ const quizSlice = createSlice({
         state.answerState = null;
         state.numQuestion = 0;
         state.finished = true;
+        state.isLeave = false;
       } else {
         state.answerState = null;
         state.numQuestion = action.payload;
@@ -91,6 +93,9 @@ const quizSlice = createSlice({
       state.repeat = true;
       state.finished = false;
       state.qtyRightAnswers = 0;
+    },
+    leaveTest(state, action) {
+      state.isLeave = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -112,7 +117,8 @@ const quizSlice = createSlice({
   },
 });
 
-export const { answerClick, nextQuestion, repeatTest } = quizSlice.actions;
+export const { answerClick, nextQuestion, repeatTest, leaveTest } =
+  quizSlice.actions;
 
 export default quizSlice.reducer;
 

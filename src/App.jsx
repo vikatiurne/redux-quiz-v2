@@ -14,6 +14,7 @@ function App() {
   const isAutentification = useSelector((state) => !!state.auth.token);
   const dispatch = useDispatch();
 
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
