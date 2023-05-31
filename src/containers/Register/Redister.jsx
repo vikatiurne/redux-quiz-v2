@@ -25,6 +25,11 @@ const Redister = () => {
 
   const dispatch = useDispatch();
 
+  function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+
   const handlerInputEmail = (e) => {
     setTachedName(true);
     setInputEmail(e.target.value);
@@ -118,9 +123,7 @@ const Redister = () => {
               value={inputEmail}
               autocomplete="email"
               inputLabel="E:mail"
-              // errorMessage="E:mail має містити символ @"
-              // inputMessage="E:mail має містити символ @"
-              valid={inputEmail.trim().length >= 8}
+              valid={validateEmail(inputEmail)}
               tached={tachedName}
             />
             <Input
