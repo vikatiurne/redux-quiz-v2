@@ -9,11 +9,11 @@ import Logout from './componets/Logout/Logout';
 import Redister from './containers/Register/Redister';
 import { useEffect } from 'react';
 import { authLogout, autoLogin } from './containers/Auth/authSlice';
+import Faq from './componets/FAQ/Faq';
 
 function App() {
   const isAutentification = useSelector((state) => !!state.auth.token);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -27,7 +27,7 @@ function App() {
         dispatch(autoLogin(token));
         const expires = experitionDate.getTime() - new Date().getTime();
         setTimeout(() => {
-          dispatch(authLogout({ token: null, user:'' }))
+          dispatch(authLogout({ token: null, user: '' }));
         }, expires);
       }
     }
@@ -39,6 +39,7 @@ function App() {
       <Route path="auth" element={<Auth />} />
       <Route path="register" element={<Redister />} />
       <Route path="quiz/:id" element={<Quiz />} />
+      <Route path="rules" element={<Faq />} />
     </Routes>
   );
 

@@ -19,7 +19,10 @@ const Drawer = ({ isOpen, onClose }) => {
   const leave = useSelector((state) => state.quiz.isLeave);
   const dispatch = useDispatch();
 
-  const links = [{ to: '/', label: 'Перелік тестів', id: uuidv4() }];
+  const links = [
+    { to: 'rules', label: 'Правила', id: uuidv4() },
+    { to: '/', label: 'Перелік тестів', id: uuidv4() },
+  ];
 
   if (!isAutentification) {
     links.push({
