@@ -19,25 +19,28 @@ const Drawer = ({ isOpen, onClose }) => {
   const leave = useSelector((state) => state.quiz.isLeave);
   const dispatch = useDispatch();
 
-  const links = [
-    { to: 'rules', label: 'Правила', id: uuidv4() },
-    { to: '/', label: 'Перелік тестів', id: uuidv4() },
-  ];
+  const links = [];
 
   if (!isAutentification) {
-    links.push({
-      to: 'auth',
-      label: 'Авторизація',
+    links.push(
+      {
+        to: 'auth',
+        label: 'Реєстрація/Вхід',
 
-      id: uuidv4(),
-    });
+        id: uuidv4(),
+      },
+      { to: '/', label: 'Головна сторінка', id: uuidv4() },
+      { to: 'rules', label: 'Правила', id: uuidv4() }
+    );
   } else {
     links.push(
+      { to: '/', label: 'Головна сторінка', id: uuidv4() },
       {
         to: 'quiz-creator',
         label: 'Створити тест',
         id: uuidv4(),
       },
+      { to: 'rules', label: 'Правила', id: uuidv4() },
       { to: 'logout', label: 'Вихід', id: uuidv4() }
     );
   }
