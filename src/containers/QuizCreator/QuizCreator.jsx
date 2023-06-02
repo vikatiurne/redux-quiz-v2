@@ -192,7 +192,9 @@ const QuizCreator = () => {
           </Modal>
         ))}
       <div className={styles.quizCreator}>
-        <h2>Створення тесту</h2>
+        {(!editState.isAdd && !editState.isEdit) && <h2>Створення тесту</h2>}
+        {editState.isAdd  && <h2>Додавання питання</h2>}
+        {editState.isEdit && <h2>Редагування питання</h2>}
         <div className={styles.formWrapper}>
           <form onSubmit={(e) => e.preventDefault()}>
             <Input
