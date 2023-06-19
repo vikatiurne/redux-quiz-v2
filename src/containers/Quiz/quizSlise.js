@@ -13,6 +13,7 @@ const initialState = {
   repeat: true,
   status: 'idle',
   isLeave: false,
+  isClick: false,
 };
 
 export const fetchQuiz = createAsyncThunk(
@@ -47,7 +48,8 @@ const quizSlice = createSlice({
     answerClick: {
       reducer(state, action) {
         const quiz = state;
-        const id = action.payload;
+        const id = action.payload.answer;
+        state.isClick = action.payload.isClicked;
         const userAnswer = id.split('-')[0];
         const rightAnswer = quiz.quiz.quiz[quiz.numQuestion].rightAnswer;
         const idRightAnswer = `${rightAnswer}-${rightAnswer}`;
@@ -77,6 +79,7 @@ const quizSlice = createSlice({
       },
     },
     nextQuestion(state, action) {
+      state.isClick = false;
       if (action.payload === state.quiz.quiz.length) {
         state.answerState = null;
         state.numQuestion = 0;

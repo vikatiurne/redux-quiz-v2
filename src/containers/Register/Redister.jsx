@@ -92,7 +92,7 @@ const Redister = () => {
           <div className={styles.modalContent}>
             <h1>Вітаю!!!</h1>
             <h4>Ви вже зареєстровані</h4>
-            <p>введіть свій e:mail та пароль на сторінці авторизації</p>
+            <p>введіть свій E-mail та пароль на сторінці авторизації</p>
             <Link to="/auth">
               <Button type="success" valid={true} title="ok">
                 Зрозуміло
@@ -113,16 +113,16 @@ const Redister = () => {
       )}
 
       <div className={styles.auth}>
-        <p>Для регістрації ведіть e:mail та пароль</p>
+        <p>Для регістрації введіть E-mail та пароль</p>
         <div className={styles.formWrapper}>
           <form onSubmit={(e) => e.preventDefault()}>
             <Input
               inputType="email"
               onChangeInput={handlerInputEmail}
-              placeholder="Введіть e:mail"
+              placeholder="Введіть E-mail"
               value={inputEmail}
               autocomplete="email"
-              inputLabel="E:mail"
+              inputLabel="E-mail"
               valid={validateEmail(inputEmail)}
               tached={tachedName}
             />

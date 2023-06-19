@@ -90,7 +90,7 @@ const Auth = () => {
         return (
           <div className={styles.modalContent}>
             <p className={styles.modalTitle}>Невдала спроба &#128557;</p>
-            <p>Невірний e:mail або пароль</p>
+            <p>Невірний E-mail або пароль</p>
             <div className={styles.authActive}>
               <Button
                 type="success"
@@ -127,10 +127,10 @@ const Auth = () => {
 
       <div className={styles.auth}>
         <p>
-          Введіть e:mail та пароль
+          Введіть E-mail та пароль
           <br />
           <span>
-            або пройдіть реєстрацію <br /> чи використайте e:mail{' '}
+            або пройдіть реєстрацію <br /> чи використайте E-mail{' '}
             <b>test@ukr.com</b> пароль <b>01234567</b>
           </span>
         </p>
@@ -139,10 +139,10 @@ const Auth = () => {
             <Input
               inputType="email"
               onChangeInput={handlerInputEmail}
-              placeholder="Введіть e:mail"
+              placeholder="Введіть E-mail"
               value={inputEmail}
               autocomplete="email"
-              inputLabel="E:mail"
+              inputLabel="E-mail"
               // errorMessage="E:mail має містити символ @"
               inputMessage=""
               valid={validateEmail(inputEmail)}

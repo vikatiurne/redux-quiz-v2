@@ -5,11 +5,12 @@ import styles from './AnswerItem.module.css';
 
 const AnswerItem = ({ answer, styleAnswer }) => {
   const num = useSelector((state) => state.quiz.numQuestion + 1);
+  const isClicked = useSelector((state) => state.quiz.isClick);
 
-  
   const dispatch = useDispatch();
+
   const handlerClick = () => {
-    dispatch(answerClick(answer.id));
+    dispatch(answerClick({ answer: answer.id, isClicked: true }));
     const timeout = setTimeout(() => {
       dispatch(nextQuestion(num));
       clearTimeout(timeout);
@@ -20,7 +21,10 @@ const AnswerItem = ({ answer, styleAnswer }) => {
   if (styleAnswer) classes.push(styles[styleAnswer]);
 
   return (
-    <li className={classes.join(' ')} onClick={handlerClick}>
+    <li
+      className={classes.join(' ')}
+      onClick={!isClicked ? () => handlerClick() : null}
+    >
       {answer.text}
     </li>
   );
