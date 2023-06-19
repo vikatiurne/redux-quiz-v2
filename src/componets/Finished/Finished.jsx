@@ -14,6 +14,8 @@ const Finished = () => {
   const quiz = state.quiz.quiz.quiz;
   const qtyRightAnswers = state.quiz.qtyRightAnswers;
 
+  console.log(quiz)
+
   const dispatch = useDispatch();
   const repeatHandler = () => {
     dispatch(repeatTest());
@@ -27,13 +29,14 @@ const Finished = () => {
         <span>({((qtyRightAnswers / quiz.length) * 100).toFixed(2)}%)</span>
       </p>
       <ul>
-        {quiz.map((item) => {
+        {quiz.map((item,i) => {
+          
           return (
             <li key={uuidv4()}>
               <p
                 className={`${item.result !== 'success' && styles.errorAnswer}`}
               >
-                <strong>{item.id}.</strong>&nbsp;{item.question}{' '}
+                <strong>{i+1}.</strong>&nbsp;{item.question}{' '}
                 {item.result !== 'success'
                   ? `(вірна відповідь - ${item.rightAnswer})`
                   : `(${item.rightAnswer})`}
