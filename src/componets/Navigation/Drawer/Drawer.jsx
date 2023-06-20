@@ -26,7 +26,6 @@ const Drawer = ({ isOpen, onClose }) => {
       {
         to: 'auth',
         label: 'Реєстрація/Вхід',
-
         id: uuidv4(),
       },
       { to: '/', label: 'Головна сторінка', id: uuidv4() },

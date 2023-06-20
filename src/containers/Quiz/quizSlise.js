@@ -50,9 +50,10 @@ const quizSlice = createSlice({
         const quiz = state;
         const id = action.payload.answer;
         state.isClick = action.payload.isClicked;
-        const userAnswer = id.split('-')[0];
+        const userAnswer = id.split('=')[0];
         const rightAnswer = quiz.quiz.quiz[quiz.numQuestion].rightAnswer;
-        const idRightAnswer = `${rightAnswer}-${rightAnswer}`;
+        const idRightAnswer = `${rightAnswer}=${rightAnswer}`;
+        console.log(idRightAnswer)
         if (quiz.quizStatus !== 'success') {
           // проверка стиля для ответа
           if (quiz.answerState !== null) {

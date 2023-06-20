@@ -73,7 +73,7 @@ const Redister = () => {
         return (
           <div className={styles.modalContent}>
             <h1>Вітаю!!!</h1>
-            <h4>реєстрація пройшла успіно!!!</h4>
+            <h4>реєстрація пройшла успішно!!!</h4>
             <p>ви відкрили доступ до сторінки створення тестів</p>
             <Link to="/">
               <Button
@@ -113,7 +113,7 @@ const Redister = () => {
       )}
 
       <div className={styles.auth}>
-        <p>Для регістрації введіть E-mail та пароль</p>
+        <p>Для реєістрації введіть E-mail та пароль</p>
         <div className={styles.formWrapper}>
           <form onSubmit={(e) => e.preventDefault()}>
             <Input

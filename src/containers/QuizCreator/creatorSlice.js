@@ -19,10 +19,10 @@ const createQuestion = (
     question,
     rightAnswer,
     answers: [
-      { text: option1, id: `${option1}-${rightAnswer}` },
-      { text: option2, id: `${option2}-${rightAnswer}` },
-      { text: option3, id: `${option3}-${rightAnswer}` },
-      { text: option4, id: `${option4}-${rightAnswer}` },
+      { text: option1, id: `${option1}=${rightAnswer}` },
+      { text: option2, id: `${option2}=${rightAnswer}` },
+      { text: option3, id: `${option3}=${rightAnswer}` },
+      { text: option4, id: `${option4}=${rightAnswer}` },
     ],
   };
 };
@@ -135,8 +135,8 @@ const creatorSlice = createSlice({
         state.quiz = action.payload;
       })
       .addCase(fetchActiveQuiz.fulfilled, (state, action) => {
-        state.length =action.payload;
-      })
+        state.length = action.payload;
+      });
   },
 });
 

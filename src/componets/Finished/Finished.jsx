@@ -14,8 +14,6 @@ const Finished = () => {
   const quiz = state.quiz.quiz.quiz;
   const qtyRightAnswers = state.quiz.qtyRightAnswers;
 
-  console.log(quiz)
-
   const dispatch = useDispatch();
   const repeatHandler = () => {
     dispatch(repeatTest());

@@ -50,6 +50,7 @@ function App() {
         <Route path="logout" element={<Logout />} />
         <Route path="quiz-creator" element={<QuizCreator />} />
         <Route path="quiz/:id" element={<Quiz />} />
+        <Route path="rules" element={<Faq />} />
       </Routes>
     );
   }

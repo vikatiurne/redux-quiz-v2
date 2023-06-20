@@ -7,6 +7,8 @@ const AnswerItem = ({ answer, styleAnswer }) => {
   const num = useSelector((state) => state.quiz.numQuestion + 1);
   const isClicked = useSelector((state) => state.quiz.isClick);
 
+  console.log(answer)
+
   const dispatch = useDispatch();
 
   const handlerClick = () => {
