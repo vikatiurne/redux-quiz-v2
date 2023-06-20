@@ -113,7 +113,7 @@ const Redister = () => {
       )}
 
       <div className={styles.auth}>
-        <p>Для реєістрації введіть E-mail та пароль</p>
+        <p>Для реєстрації введіть E-mail та пароль</p>
         <div className={styles.formWrapper}>
           <form onSubmit={(e) => e.preventDefault()}>
             <Input

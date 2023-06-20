@@ -53,14 +53,16 @@ const Logout = () => {
   );
 
   return (
-    <Modal
-      active={modalActive}
-      setActive={() => {
-        setModalActive();
-      }}
-    >
-      {renderModalOut}
-    </Modal>
+    <Link to="/">
+      <Modal
+        active={modalActive}
+        setActive={() => {
+          setModalActive();
+        }}
+      >
+        {renderModalOut}
+      </Modal>
+    </Link>
   );
 };
 

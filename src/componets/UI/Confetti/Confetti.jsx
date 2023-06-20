@@ -9,14 +9,14 @@ const Confetti = () => {
     heigth: clientHeight,
   });
 
-  const getSize = () => {
-    setWindowSize({ width: clientWidth, height: clientHeight });
-  };
-
+  
   useEffect(() => {
+    const getSize = () => {
+      setWindowSize({ width: clientWidth, height: clientHeight });
+    };
     window.addEventListener('resize', getSize);
     return window.removeEventListener('resize', getSize);
-  }, [windowSize]);
+  }, [windowSize,clientWidth,clientHeight]);
 
   return (
     <ReactConfetti
